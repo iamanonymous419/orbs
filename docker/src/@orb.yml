@@ -1,0 +1,36 @@
+# @orb.yml
+version: 2.1
+
+# Required: A short description of your orb
+description: |
+  A reusable CircleCI orb that helps simplify Docker operations like building, tagging, and pushing.
+
+# Required: Homepage (repo or docs)
+display:
+  home_url: https://github.com/iamanonymous419/orbs/tree/main/docker
+  source_url: https://github.com/iamanonymous419/orbs/tree/main/docker
+
+# Optional: Keywords for search
+keywords:
+  - docker
+  - ci
+  - devops
+  - container
+
+# Optional: CircleCI tags/categories (up to 5)
+categories:
+  - docker
+  - utilities
+
+# Optional: A more detailed overview (supports markdown)
+overview: |
+  ## Docker Helper Orb
+
+  This orb provides convenient commands and jobs to build and push Docker images using best practices.
+  It uses the official `cimg` Docker image as the base environment.
+
+  ### Features:
+  - Docker image build & tag
+  - Push to Docker Hub
+
+  For usage examples and details, check the [GitHub repo](https://github.com/iamanonymous419/orbs/tree/main/docker).

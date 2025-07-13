@@ -1,0 +1,23 @@
+description: Tag a Docker image with a new tag.
+
+parameters:
+
+  image-name:
+    type: string
+    description: Name of the Docker image (e.g., yourusername/client)
+
+  old-tag:
+    type: string
+    description: Existing tag to tag from (e.g., build-123)
+
+  new-tag:
+    type: string
+    description: New tag to apply (e.g., latest)
+
+steps:
+  - run:
+      name: Tag Docker Image
+      command: |
+        echo "🔖 Tagging image << parameters.image-name >>:<< parameters.old-tag >> → << parameters.new-tag >>"
+        docker tag "<< parameters.image-name >>:<< parameters.old-tag >>" "<< parameters.image-name >>:<< parameters.new-tag >>"
+        echo "✅ Successfully tagged << parameters.image-name >>:<< parameters.old-tag >> as << parameters.new-tag >>"

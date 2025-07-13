@@ -1,0 +1,36 @@
+description: Build a Docker image
+
+parameters:
+
+  image-name:
+    type: string
+    description: Name of the Docker image (e.g., youruser/chat-client)
+
+  tag:
+    type: string
+    default: latest
+    description: Tag of the image (e.g., latest, build-123)
+
+  dockerfile-path:
+    type: string
+    default: Dockerfile
+    description: Path to Dockerfile (e.g., ./client/Dockerfile)
+
+  build-context:
+    type: string
+    default: .
+    description: Build context path (e.g., ./client)
+
+steps:
+
+  - run:
+      name: Show Docker Version
+      command: docker --version
+
+  - run:
+      name: Build Docker Image
+      command: |
+        echo "📦 Building Docker image << parameters.image-name >>:<< parameters.tag >>"
+        echo "Using Dockerfile at << parameters.dockerfile-path >>"
+        docker build -t "<< parameters.image-name >>:<< parameters.tag >>" \
+          -f "<< parameters.dockerfile-path >>" "<< parameters.build-context >>"

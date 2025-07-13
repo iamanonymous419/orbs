@@ -1,0 +1,22 @@
+description: Docker login to Docker Hub using provided credentials.
+
+parameters:
+
+  username:
+    type: string
+    description: Docker Hub username
+    
+  password:
+    type: env_var_name
+    description: Environment variable that holds your Docker Hub password
+
+steps:
+  - run:
+      name: Docker Login
+      command: |
+        if [ -n "<< parameters.username >>" ]; then
+          echo "$<< parameters.password >>" | docker login -u "<< parameters.username >>" --password-stdin
+          echo "✅ Successfully logged in to Docker Hub as << parameters.username >>"
+        else
+          echo "⚠️ No Docker username provided — skipping login."
+        fi

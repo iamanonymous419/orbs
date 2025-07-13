@@ -1,0 +1,38 @@
+description: >
+  Example workflow using the docker-tools orb's commands to build, tag, login, and push a Docker image to Docker Hub.
+
+usage:
+  version: 2.1
+  orbs:
+    docker: iamanonymous419/docker@1.0.0
+
+  jobs:
+    full-docker-pipeline:
+      docker:
+        - image: cimg/base:stable
+      steps:
+        - checkout
+        
+        - docker/build:
+            image-name: yourdockerhubuser/client
+            tag: build-123
+            dockerfile-path: ./client/Dockerfile
+            build-context: ./client
+
+        - docker/login:
+            username: yourdockerhubuser
+            password: DOCKERHUB_PASSWORD
+
+        - docker/tag:
+            image-name: yourdockerhubuser/chat-client
+            old-tag: build-123
+            new-tag: latest
+
+        - docker/push:
+            image-name: yourdockerhubuser/client
+            tag: latest
+
+  workflows:
+    use-my-orb:
+      jobs:
+        - full-docker-pipeline

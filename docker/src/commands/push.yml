@@ -1,0 +1,20 @@
+description: Push a Docker image to Docker Hub with the given name and tag.
+
+parameters:
+
+  image-name:
+    type: string
+    description: Name of the Docker image (e.g., yourusername/client)
+
+  tag:
+    type: string
+    default: latest
+    description: Tag to push (e.g., latest, v1.0.0)
+
+steps:
+  - run:
+      name: Push Docker Image
+      command: |
+        echo "🚀 Pushing image << parameters.image-name >>:<< parameters.tag >>"
+        docker push "<< parameters.image-name >>:<< parameters.tag >>"
+        echo "✅ Successfully pushed << parameters.image-name >>:<< parameters.tag >> to Docker Hub"
