@@ -60,6 +60,8 @@ orbs:
   docker: iamanonymous419/docker@1.0.0
 ```
 
+View this orb in the CircleCI Orb Registry: https://circleci.com/developer/orbs/orb/iamanonymous419/docker
+
 ## Development
 
 ### Setting Up the Development Environment
