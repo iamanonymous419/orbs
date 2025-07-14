@@ -1,0 +1,34 @@
+description: "Scan a Docker image using Trivy and save the report as an artifact"
+
+parameters:
+  image:
+    type: string
+    description: "Docker image to scan (e.g., nginx:latest)"
+  output:
+    type: string
+    default: "trivy-report.txt"
+    description: "Path to store the Trivy scan result"
+  format:
+    type: string
+    default: "table"
+    description: "Report format: table, json, sarif, etc."
+  severity:
+    type: string
+    default: "HIGH,CRITICAL"
+    description: "Comma-separated list of severities to report"
+
+steps:
+  - run:
+      name: Trivy Scan
+      command: |
+        mkdir -p trivy-reports
+        echo "Scanning image: << parameters.image >>"
+        trivy image \
+          --severity << parameters.severity >> \
+          --format << parameters.format >> \
+          --exit-code 0 \
+          --output trivy-reports/<< parameters.output >> \
+          << parameters.image >>
+  - store_artifacts:
+      path: trivy-reports/<< parameters.output >>
+      destination: << parameters.output >>

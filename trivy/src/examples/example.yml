@@ -1,0 +1,30 @@
+description: >
+  Example workflow using the Trivy orb's commands to install Trivy and scan a Docker image for vulnerabilities.
+
+usage:
+  version: 2.1
+  orbs:
+    trivy: iamanonymous419/trivy@1.0.0
+
+  jobs:
+    trivy-full-scan:
+      machine: true
+      steps:
+        - checkout
+
+        - trivy/install
+
+        - trivy/scan:
+            image: yourdockerhubuser/chat-client:build-123
+            output: client-report.txt
+            format: table
+            severity: HIGH,CRITICAL
+
+        - store_artifacts:
+            path: trivy-reports/client-report.txt
+            destination: trivy-client-report
+
+  workflows:
+    use-trivy-orb:
+      jobs:
+        - trivy-full-scan

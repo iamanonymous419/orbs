@@ -1,0 +1,32 @@
+version: 2.1
+
+# Required: A short description of your orb
+description: |
+  A reusable CircleCI orb that simplifies security scanning of Docker images using Trivy.
+
+# Required: Homepage (repo or docs)
+display:
+  home_url: https://github.com/iamanonymous419/orbs/tree/main/trivy
+  source_url: https://github.com/iamanonymous419/orbs/tree/main/trivy
+
+# Optional: Keywords for search
+keywords:
+  - trivy
+  - docker
+  - security
+  - scan
+  - devsecops
+
+# Optional: CircleCI tags/categories (up to 5)
+categories:
+  - security
+  - docker
+  - utilities
+
+# Optional: A more detailed overview (supports markdown)
+overview: |
+  ## Trivy Security Scan Orb
+
+  This orb provides commands to install [Trivy](https://github.com/aquasecurity/trivy) and scan Docker images for vulnerabilities in your CI pipelines.
+
+  It supports various output formats and severities, making it easy to integrate security checks into your development workflow.
