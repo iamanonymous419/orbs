@@ -1,0 +1,4 @@
+description: "Executor for running SonarCloud scans"
+
+docker:
+  - image: cimg/node:18.20.2

@@ -1,0 +1,41 @@
+version: 2.1
+
+# Required: A short description of your orb
+description: |
+  A reusable CircleCI orb that simplifies static code analysis using SonarQube or SonarCloud.
+
+# Required: Homepage (repo or docs)
+display:
+  home_url: https://github.com/iamanonymous419/orbs/tree/main/sonar
+  source_url: https://github.com/iamanonymous419/orbs/tree/main/sonar
+
+# Optional: Keywords for search
+keywords:
+  - sonar
+  - sonarqube
+  - sonarcloud
+  - static-analysis
+  - code-quality
+
+# Optional: CircleCI tags/categories (up to 5)
+categories:
+  - testing
+  - security
+  - utilities
+
+# Optional: A more detailed overview (supports markdown)
+overview: |
+  ## Sonar Static Code Analysis Orb
+
+  This orb provides a reusable job to install the [SonarQube Scanner](https://docs.sonarsource.com/latest/analysis/scan/sonarscanner/) and run static code analysis within your CircleCI pipeline.
+
+  Supports configuration for both [SonarCloud](https://sonarcloud.io) and self-hosted SonarQube, with options to set:
+  
+  - `project_key`
+  - `organization`
+  - `sources`
+  - `exclusions`
+  - `host_url`
+  - `sonar_token` (as a secure environment variable)
+
+  Easily integrate code quality and security checks into your workflow to enforce DevSecOps best practices.

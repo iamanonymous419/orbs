@@ -1,0 +1,19 @@
+description: >
+  Example workflow using the Sonar orb job to install the SonarQube scanner and perform static code analysis.
+  This example assumes SONAR_TOKEN is already set as an environment variable.
+
+usage:
+  version: 2.1
+  orbs:
+    sonar: iamanonymous419/sonar@1.0.0
+
+  workflows:
+    sonar-analysis:
+      jobs:
+        - sonar/scan:
+            project_key: iamanonymous419_test-project
+            organization: iamanonymous419
+            sources: .
+            exclusions: "**/node_modules/**,**/dist/**,**/build/**"
+            host_url: https://sonarcloud.io
+            sonar_token: SONAR_TOKEN

@@ -1,0 +1,36 @@
+description: "Run a SonarCloud scan using npx sonar-scanner."
+
+parameters:
+  project_key:
+    type: string
+  organization:
+    type: string
+  sources:
+    type: string
+  exclusions:
+    type: string
+    default: "**/node_modules/**,**/dist/**,**/build/**"
+  host_url:
+    type: string
+    default: "https://sonarcloud.io"
+  sonar_token:
+    type: env_var_name
+    default: SONAR_TOKEN
+
+executor: default
+
+steps:
+  - checkout
+  - run:
+      name: Install Sonar Scanner
+      command: npm install sonarqube-scanner
+  - run:
+      name: Run SonarCloud Scan
+      command: |
+        npx sonar-scanner \
+          -Dsonar.projectKey=<< parameters.project_key >> \
+          -Dsonar.organization=<< parameters.organization >> \
+          -Dsonar.sources=<< parameters.sources >> \
+          -Dsonar.host.url=<< parameters.host_url >> \
+          -Dsonar.exclusions=<< parameters.exclusions >> \
+          -Dsonar.login=${<< parameters.sonar_token >>}
