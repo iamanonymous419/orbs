@@ -21,6 +21,12 @@ parameters:
     default: .
     description: Build context path (e.g., ./client)
 
+  build-args:
+    type: string
+    default: ""
+    description: |
+      Optional build arguments (space-separated, e.g., "NODE_ENV=production API_URL=https://api.example.com")
+
 steps:
 
   - run:
@@ -32,5 +38,15 @@ steps:
       command: |
         echo "📦 Building Docker image << parameters.image-name >>:<< parameters.tag >>"
         echo "Using Dockerfile at << parameters.dockerfile-path >>"
-        docker build -t "<< parameters.image-name >>:<< parameters.tag >>" \
-          -f "<< parameters.dockerfile-path >>" "<< parameters.build-context >>"
+        
+        if [ -n "<< parameters.build-args >>" ]; then
+          echo "➡️ Using build args: << parameters.build-args >>"
+          docker build -t "<< parameters.image-name >>:<< parameters.tag >>" \
+            -f "<< parameters.dockerfile-path >>" \
+            <<# parameters.build-args >>--build-arg << parameters.build-args >><</ parameters.build-args >> \
+            "<< parameters.build-context >>"
+        else
+          docker build -t "<< parameters.image-name >>:<< parameters.tag >>" \
+            -f "<< parameters.dockerfile-path >>" \
+            "<< parameters.build-context >>"
+        fi
