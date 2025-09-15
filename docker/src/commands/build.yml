@@ -22,10 +22,10 @@ parameters:
     description: Build context path (e.g., ./client)
 
   build-args:
-    type: steps
-    default: []
+    type: string
+    default: ""
     description: |
-      Optional build arguments as a list (e.g., ["NODE_ENV=production", "API_URL=https://api.example.com"])
+      Optional build arguments (space-separated, e.g., "NODE_ENV=production API_URL=https://api.example.com")
 
 steps:
 
@@ -39,22 +39,14 @@ steps:
         echo "📦 Building Docker image << parameters.image-name >>:<< parameters.tag >>"
         echo "Using Dockerfile at << parameters.dockerfile-path >>"
         
-        BUILD_ARGS=""
-        <<# parameters.build-args >>
-        BUILD_ARGS="$BUILD_ARGS --build-arg << parameters.build-args >>"
-        echo "➡️ Adding build arg: << parameters.build-args >>"
-        <</ parameters.build-args >>
-        
-        if [ -n "$BUILD_ARGS" ]; then
-          echo "🔧 Building with build arguments"
+        if [ -n "<< parameters.build-args >>" ]; then
+          echo "➡️ Using build args: << parameters.build-args >>"
           docker build -t "<< parameters.image-name >>:<< parameters.tag >>" \
             -f "<< parameters.dockerfile-path >>" \
-            $BUILD_ARGS \
+            <<# parameters.build-args >>--build-arg << parameters.build-args >><</ parameters.build-args >> \
             "<< parameters.build-context >>"
         else
-          echo "🔧 Building without build arguments"
           docker build -t "<< parameters.image-name >>:<< parameters.tag >>" \
             -f "<< parameters.dockerfile-path >>" \
             "<< parameters.build-context >>"
         fi
-        

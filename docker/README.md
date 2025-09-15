@@ -57,7 +57,7 @@ To use this orb in your CircleCI configuration:
 version: 2.1
 
 orbs:
-  docker: iamanonymous419/docker@3.0.0
+  docker: iamanonymous419/docker@5.0.0
 ```
 
 View this orb in the CircleCI Orb Registry: https://circleci.com/developer/orbs/orb/iamanonymous419/docker
@@ -143,7 +143,7 @@ circleci orb publish promote iamanonymous419/docker@dev:gamma patch
 Or publish a specific version directly:
 
 ```bash
-circleci orb publish orb.yml iamanonymous419/docker@3.0.0
+circleci orb publish orb.yml iamanonymous419/docker@5.0.0
 ```
 
 ## Orb Structure
@@ -209,19 +209,19 @@ jobs:
       - docker/login:
           username: $DOCKERHUB_USERNAME
           password: DOCKERHUB_PASSWORD
+
       - docker/build:
           image-name: $DOCKERHUB_USERNAME/chat-client
           tag: << pipeline.parameters.image_tag >>
           dockerfile-path: ./client/Dockerfile
           build-context: ./client
-          build-args:
-            - NODE_ENV=production
-            - API_URL=https://api.example.com
-            - VITE_STREAM_API_KEY=${VITE_STREAM_API_KEY}
+          build-args: "NODE_ENV=production API_URL=https://api.example.com VITE_STREAM_API_KEY=${VITE_STREAM_API_KEY}"
+
       - docker/tag:
           image-name: $DOCKERHUB_USERNAME/chat-client
           old-tag: << pipeline.parameters.image_tag >>
           new-tag: latest
+
       - docker/push:
           image-name: $DOCKERHUB_USERNAME/chat-client
           tag: latest
@@ -243,13 +243,13 @@ executors:
 
 ## Usage Examples
 
-### Complete Multi-Service Build with Build Arguments (v3.0.0)
+### Complete Multi-Service Build with Build Arguments (v5.0.0)
 
 ```yaml
 version: 2.1
 
 orbs:
-  docker: iamanonymous419/docker@3.0.0
+  docker: iamanonymous419/docker@5.0.0
 
 executors:
   docker-executor:
@@ -275,10 +275,7 @@ jobs:
           tag: << pipeline.parameters.image_tag >>
           dockerfile-path: ./frontend/Dockerfile
           build-context: ./frontend
-          build-args:
-            - NODE_ENV=production
-            - API_URL=https://api.example.com
-            - VITE_STREAM_API_KEY=${VITE_STREAM_API_KEY}
+          build-args: "NODE_ENV=production API_URL=https://api.example.com VITE_STREAM_API_KEY=${VITE_STREAM_API_KEY}"
       - docker/tag:
           image-name: $DOCKERHUB_USERNAME/chat-client
           old-tag: << pipeline.parameters.image_tag >>
@@ -299,10 +296,6 @@ jobs:
           tag: << pipeline.parameters.image_tag >>
           dockerfile-path: ./backend/Dockerfile
           build-context: ./backend
-          build-args:
-            - NODE_ENV=production
-            - DB_HOST=production-db.example.com
-            - REDIS_URL=redis://production-redis:6379
       - docker/tag:
           image-name: $DOCKERHUB_USERNAME/chat-server
           old-tag: << pipeline.parameters.image_tag >>
@@ -318,13 +311,13 @@ workflows:
       - build-server
 ```
 
-### Single Service Build with Build Arguments (v3.0.0)
+### Single Service Build with Build Arguments (v5.0.0)
 
 ```yaml
 version: 2.1
 
 orbs:
-  docker: iamanonymous419/docker@3.0.0
+  docker: iamanonymous419/docker@5.0.0
 
 jobs:
   build-and-push:
@@ -337,16 +330,12 @@ jobs:
           password: DOCKERHUB_PASSWORD
       - docker/build:
           image-name: myapp
-          tag: v3.0.0
+          tag: v5.0.0
           dockerfile-path: ./Dockerfile
           build-context: .
-          build-args:
-            - NODE_ENV=production
-            - VERSION=3.0.0
-            - BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
       - docker/push:
           image-name: myapp
-          tag: v3.0.0
+          tag: v5.0.0
 
 workflows:
   single-build:
@@ -354,13 +343,13 @@ workflows:
       - build-and-push
 ```
 
-### Simple Build without Build Arguments (v3.0.0)
+### Simple Build without Build Arguments (v5.0.0)
 
 ```yaml
 version: 2.1
 
 orbs:
-  docker: iamanonymous419/docker@3.0.0
+  docker: iamanonymous419/docker@5.0.0
 
 jobs:
   simple-build:
@@ -418,7 +407,7 @@ See the Commands section above for detailed parameter information for each comma
     # ❌ No build-args parameter available
 ```
 
-#### v2.0.0 - String-Based Build Arguments
+#### v5.0.0 - String-Based Build Arguments (Current)
 ```yaml
 # v2.0.0 - Single string format
 - docker/build:
@@ -429,44 +418,7 @@ See the Commands section above for detailed parameter information for each comma
     build-args: "NODE_ENV=production API_URL=https://api.example.com REDIS_URL=redis://localhost:6379"
 ```
 
-#### v3.0.0 - Array-Based Build Arguments (Current)
-```yaml
-# v3.0.0 - Clean array format
-- docker/build:
-    image-name: myapp
-    tag: latest
-    dockerfile-path: ./Dockerfile
-    build-context: .
-    build-args:
-      - NODE_ENV=production
-      - API_URL=https://api.example.com
-      - REDIS_URL=redis://localhost:6379
-```
-
-### 🚀 Migration Paths
-
-#### From v1.0.0 to v3.0.0
-- **Added**: `build-args` parameter support
-- **Benefit**: Can now pass build-time variables to Docker builds
-- **Action**: Add build arguments as needed using array format
-
-#### From v2.0.0 to v3.0.0
-- **Changed**: Build arguments format from string to array
-- **Breaking Change**: Must update build-args syntax
-- **Migration**: Split single string into array items
-
-**Example Migration:**
-```yaml
-# Before (v2.0.0)
-build-args: "NODE_ENV=production API_URL=https://api.example.com"
-
-# After (v3.0.0) 
-build-args:
-  - NODE_ENV=production  
-  - API_URL=https://api.example.com
-```
-
-### 🎯 Benefits of v3.0.0
+### 🎯 Benefits of v5.0.0
 
 - **Cleaner Syntax**: Each build argument on its own line
 - **Better Readability**: Easy to see and manage individual arguments
@@ -476,10 +428,10 @@ build-args:
 
 ## Version History
 
-- **3.0.0** - Current stable version with array-based build arguments
+- **5.0.0** - Current stable version with array-based build arguments
 - **2.0.0** - String-based build arguments support  
 - **1.0.0** - Basic Docker operations without build arguments
-- **dev:gamma** - Development version for testing v3.0.0 features
+- **dev:gamma** - Development version for testing v5.0.0 features
 
 ## Support
 
@@ -495,17 +447,11 @@ This orb is licensed under the MIT License. See the LICENSE file for details.
 
 ## Changelog
 
-### [3.0.0] - Current
-- **BREAKING**: Changed `build-args` parameter from string format to array format
+### [5.0.0] - Current
 - **Enhanced**: Improved build argument processing for better maintainability
-- **Improved**: Cleaner syntax following YAML conventions
+- **Improved**: Cleaner syntax following standard Docker conventions
 - **Added**: Better support for complex environment variables in build args
 - **Documentation**: Comprehensive migration guide and examples
-
-### [2.0.0] - Previous  
-- **NEW**: Added `build-args` parameter support with string format
-- **Enhanced**: Extended build command functionality
-- **Added**: Build-time variable passing capability
 
 ### [1.0.0] - Legacy
 - **Initial**: Basic Docker operations (login, build, tag, push)
@@ -513,5 +459,5 @@ This orb is licensed under the MIT License. See the LICENSE file for details.
 - **Stable**: Production-ready basic functionality
 
 ### [dev:gamma] - Development
-- Development version for v3.0.0 features
-- Testing array-based build arguments functionality
+- Development version for v5.0.0 features
+- Testing string-based build arguments functionality

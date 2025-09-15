@@ -4,7 +4,7 @@ description: >
 usage:
   version: 2.1
   orbs:
-    docker: iamanonymous419/docker@3.0.1
+    docker: iamanonymous419/docker@5.0.0
 
   jobs:
     full-docker-pipeline:
@@ -18,9 +18,7 @@ usage:
             tag: build-123
             dockerfile-path: ./client/Dockerfile
             build-context: ./client
-            build-args:
-              - NODE_ENV=production
-              - API_URL=https://api.example.com
+            build-args: "NODE_ENV=production API_URL=https://api.example.com" 
 
         - docker/login:
             username: yourdockerhubuser
